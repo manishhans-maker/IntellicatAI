@@ -1,0 +1,249 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile & Request Quota",
+      "description": "User profile with authentication details, subscription tier, and free AI request quota usage",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Authentication User ID"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "User avatar URL"
+        },
+        "requestCount": {
+          "type": "number",
+          "description": "Number of AI requests made by the user"
+        },
+        "maxRequests": {
+          "type": "number",
+          "description": "Maximum allowed requests for the user (default: 15 for free tier)"
+        },
+        "tier": {
+          "type": "string",
+          "enum": ["free", "vip", "founder"],
+          "description": "User account tier"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of account creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last account update"
+        }
+      },
+      "required": ["uid", "email", "requestCount", "maxRequests", "tier", "createdAt", "updatedAt"]
+    },
+    "Conversation": {
+      "title": "User Chat Conversation",
+      "description": "Persistent conversation thread with metadata including title, mode, pinned/archived flags",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique conversation ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user ID"
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable or auto-generated title"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["normal", "cat-code"],
+          "description": "Active conversation mode"
+        },
+        "provider": {
+          "type": "string",
+          "enum": ["groq", "gemini"],
+          "description": "Default or selected AI provider"
+        },
+        "isPinned": {
+          "type": "boolean",
+          "description": "Whether conversation is pinned to the top"
+        },
+        "isArchived": {
+          "type": "boolean",
+          "description": "Whether conversation is archived"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp when conversation was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last activity"
+        }
+      },
+      "required": ["id", "userId", "title", "mode", "createdAt", "updatedAt"]
+    },
+    "Message": {
+      "title": "Conversation Message",
+      "description": "Individual turn in a conversation thread with role, content, and optional attachments or search citations",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique message ID"
+        },
+        "conversationId": {
+          "type": "string",
+          "description": "Parent conversation ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User ID who owns the conversation"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "assistant"],
+          "description": "Message author role"
+        },
+        "content": {
+          "type": "string",
+          "description": "Message text in Markdown"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["normal", "cat-code"],
+          "description": "Chat mode when sent"
+        },
+        "provider": {
+          "type": "string",
+          "enum": ["groq", "gemini"],
+          "description": "Model provider that generated this response"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Short human-readable time string"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of creation"
+        }
+      },
+      "required": ["id", "conversationId", "userId", "role", "content", "createdAt"]
+    },
+    "Memory": {
+      "title": "Persistent User Memory",
+      "description": "Custom user memories, preferences, and facts to customize AI context",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique memory ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user ID"
+        },
+        "key": {
+          "type": "string",
+          "description": "Memory key or label"
+        },
+        "value": {
+          "type": "string",
+          "description": "Memory content"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["preference", "profile", "study", "general"],
+          "description": "Memory category"
+        },
+        "isEnabled": {
+          "type": "boolean",
+          "description": "Whether this memory is active"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of update"
+        }
+      },
+      "required": ["id", "userId", "key", "value", "isEnabled", "createdAt", "updatedAt"]
+    },
+    "Space": {
+      "title": "IntelicatAI Project Space",
+      "description": "Project space containing notes, custom instructions, and context",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique space ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user ID"
+        },
+        "title": {
+          "type": "string",
+          "description": "Space title"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description of the space"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Icon name or emoji"
+        },
+        "customInstructions": {
+          "type": "string",
+          "description": "Space-specific system instructions"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Scratchpad and documentation notes"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of update"
+        }
+      },
+      "required": ["id", "userId", "title", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Stores user profiles, subscription tier, and AI request counts"
+    },
+    "/users/{userId}/conversations/{conversationId}": {
+      "schema": "Conversation",
+      "description": "Stores persistent conversation threads owned by the user"
+    },
+    "/users/{userId}/conversations/{conversationId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Stores individual messages within a user conversation"
+    },
+    "/users/{userId}/memories/{memoryId}": {
+      "schema": "Memory",
+      "description": "Stores persistent memories and preferences owned by the user"
+    },
+    "/users/{userId}/spaces/{spaceId}": {
+      "schema": "Space",
+      "description": "Stores project spaces, instructions, and notes owned by the user"
+    }
+  }
+}
